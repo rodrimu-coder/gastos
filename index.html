@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Control de gastos personales y casas</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <nav class="topbar" aria-label="Navegación principal">
+        <div>
+          <p class="eyebrow">Panel financiero mensual</p>
+          <h1>Mis gastos e ingresos</h1>
+        </div>
+        <div class="month-picker">
+          <label for="monthSelect">Mes activo</label>
+          <input type="month" id="monthSelect" />
+        </div>
+      </nav>
+      <section class="summary-grid" aria-label="Resumen financiero">
+        <article class="summary-card income">
+          <span>Ingresos</span>
+          <strong id="totalIncome">$0</strong>
+        </article>
+        <article class="summary-card expense">
+          <span>Egresos</span>
+          <strong id="totalExpenses">$0</strong>
+        </article>
+        <article class="summary-card balance">
+          <span>Total en cuenta</span>
+          <strong id="balance">$0</strong>
+        </article>
+      </section>
+    </header>
+
+    <main>
+      <section class="panel form-panel" aria-labelledby="new-entry-title">
+        <div>
+          <p class="eyebrow">Carga rápida</p>
+          <h2 id="new-entry-title">Agregar movimiento</h2>
+          <p class="muted">Los movimientos se guardan por mes y puedes editarlos cuando cambien tus gastos.</p>
+        </div>
+        <form id="entryForm" class="entry-form">
+          <input type="hidden" id="entryId" />
+          <div class="field">
+            <label for="entryType">Tipo</label>
+            <select id="entryType" required>
+              <option value="income">Ingreso</option>
+              <option value="personal">Gasto personal</option>
+              <option value="home">Gasto casa</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="entryName">Detalle</label>
+            <input id="entryName" type="text" placeholder="Ej: sueldo, arriendo, comida" required />
+          </div>
+          <div class="field">
+            <label for="entryAmount">Monto</label>
+            <input id="entryAmount" type="number" min="0" step="0.01" placeholder="0" required />
+          </div>
+          <div class="field field-wide">
+            <label for="entryNote">Nota opcional</label>
+            <input id="entryNote" type="text" placeholder="Ej: pagado el día 10" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" id="saveButton">Guardar movimiento</button>
+            <button type="button" class="secondary" id="cancelEditButton" hidden>Cancelar edición</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="panel chart-panel" aria-labelledby="chart-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Gráficos</p>
+              <h2 id="chart-title">Ingresos vs egresos</h2>
+            </div>
+          </div>
+          <canvas id="barChart" width="680" height="320" aria-label="Gráfico de barras de ingresos, gastos personales, gastos casa y saldo" role="img"></canvas>
+        </article>
+
+        <article class="panel chart-panel" aria-labelledby="donut-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Distribución</p>
+              <h2 id="donut-title">Gastos por categoría</h2>
+            </div>
+          </div>
+          <canvas id="donutChart" width="420" height="320" aria-label="Gráfico circular de gastos personales y gastos casa" role="img"></canvas>
+          <div class="legend">
+            <span><i class="dot personal"></i>Personales</span>
+            <span><i class="dot home"></i>Casas</span>
+          </div>
+        </article>
+      </section>
+
+      <section class="lists-grid" aria-label="Listas de movimientos">
+        <article class="panel list-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Entrada</p>
+              <h2>Ingresos</h2>
+            </div>
+            <strong id="incomeCount">0</strong>
+          </div>
+          <div id="incomeList" class="entry-list"></div>
+        </article>
+        <article class="panel list-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Salida</p>
+              <h2>Gastos personales</h2>
+            </div>
+            <strong id="personalCount">0</strong>
+          </div>
+          <div id="personalList" class="entry-list"></div>
+        </article>
+        <article class="panel list-panel">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Salida</p>
+              <h2>Gastos casas</h2>
+            </div>
+            <strong id="homeCount">0</strong>
+          </div>
+          <div id="homeList" class="entry-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <template id="emptyStateTemplate">
+      <div class="empty-state">
+        <span>Sin movimientos</span>
+        <p>Agrega un registro para este mes.</p>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
